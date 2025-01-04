@@ -4,10 +4,11 @@
   
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  
   margin: 0 auto;
   text-align: center;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 header {
@@ -17,20 +18,27 @@ header {
   width: 100vw;
   padding: 30px;
 
-  background-color: gray;
+  background-color: #1a1a1a;
 
   label {
     align-self: center;
     padding: 10px;
-    background-color: #1a1a1a;
+    background-color: gray;
     color: white;
+    font-weight: 600;
     
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     margin-right: 2px;
   }
 
+  input {
+    padding: 10px;
+    margin-right: 10px;
+  }
+
   select {
+    padding: 10px;
     margin-right: 20px;
   }
   input {

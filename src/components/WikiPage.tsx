@@ -1,89 +1,51 @@
 import './WikiPage.css'
 import QuestionCircle from '../assets/question-circle.svg?react'
-
-import { useEffect, useRef, useState } from "react"
-import { useConfigStore, useWikiStore } from "../stores";
-import wiki from "wikipedia"
+import { useRef, useState } from "react"
+import { useWikiStore } from '../stores';
+import ExpandableBox from './ExpandableBox';
+import LoadingModal from './LoadingModal';
 
 
 const WikiPage = () => {
     const pageRef = useRef<HTMLDivElement>(null);
-    const { title, setTitle } = useWikiStore();
-    const { lang } = useConfigStore();
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    const [docTitle, setDocTitle] = useState(title);
-    const [description, setDescription] = useState("");
-    const [intro, setIntro] = useState('');
-    const [imageURL, setImageURL] = useState<string | null>(null);
-    const [links, setLinks] = useState<string[]>([]);
-
+    const { title, description, intro, imageURL, links, redirect, isLoading, locatePage } = useWikiStore();
     const [filterValue, setFilterValue] = useState("");
-
-    useEffect(() => {
-        let [summaryLoaded, introLoaded] = [false, false];
-        setIsLoading(true);
-        setDocTitle(title);
-
-        wiki.setLang(lang);
-        wiki.page(title)
-            .then(page => {
-                setDocTitle(page.title); 
-                page.summary().then(summary => {
-                    setDescription(summary.description || "");
-                    setImageURL(summary.thumbnail ? summary.thumbnail.source : null);
-                    
-                    summaryLoaded = true;
-                    setIsLoading(!introLoaded);
-                })
-                page.intro()
-                    .then(res => {
-                        setIntro(res)
-                        introLoaded = true;
-                        setIsLoading(!summaryLoaded);
-                    })
-                    .catch(error => console.error(error));
-
-                page.links()
-                    .then(res => setLinks(res))
-                    .catch(error => console.error(error));
-            })
-            .catch(error => console.error(error));
-    }, [title]);
 
     return (
         <div className="wiki-page" ref={pageRef}>
+            {/* TITLE */}
             <div className="page-title">
-                <h1>{docTitle}</h1>
+                <h1>{title}</h1>
                 {description ? <span>{description}</span> : <></>}
+                {redirect ? <p>{redirect}에서 넘어옴</p> : <></>}
             </div>
 
-            { isLoading ? 
-                <div className="loading-container">
-                    <div className='loading'></div> 
-                    <span>Loading...</span>
-                </div>
-                :
-                <div className={`page-intro ${imageURL === null ? 'extended' : ''}`}>
-                    <div className="paragraphs">
-                        {intro.split('\n').map((val, i)=>
-                            <p className="intro-text" key={i}>{val}</p>
-                        )}
+            {/* CONTENT */}
+            <div>
+                <ExpandableBox maxHeight={300}>
+                    <div className="intro-container row-flex">
+                        <div className="page-intro">
+                            <div className="paragraphs">
+                                {intro!.split('\n').map((val, i)=>
+                                    <p className="intro-text" key={i}>{val}</p>
+                                )}
+                            </div>
+                        </div>
+                        { imageURL !== null ? 
+                            <div className="img-container">
+                                <label className="img-label">이미지</label>
+                                <div className="img-border">
+                                    <img src={imageURL}></img>
+                                </div> 
+                            </div>
+                            :
+                            <></>
+                        }
                     </div>
-                </div>
-            }
-            { !isLoading && imageURL !== null ? 
-                <label className="img-label">이미지</label> : <></>
-            }
-            { !isLoading && imageURL !== null ?    
-                <div className="img-container">
-                    <img src={imageURL}></img>
-                </div> 
-                :
-                <></>
-            }
+                </ExpandableBox>
+            </div>
 
+            {/* FILTER */}
             <div className="filter-container">
                 <div className="filter-label-container">
                     <label className="filter-label">링크 필터</label>
@@ -99,15 +61,18 @@ const WikiPage = () => {
                 </input>
             </div>
 
+            {/* LINKS */}
             <div className="links-container">
             {
-                links.filter(val => val.toLowerCase().includes(filterValue.toLowerCase()))
+                links!.filter(val => val.toLowerCase().includes(filterValue.toLowerCase()))
                     .map((value, i) => 
-                        <div onClick={() => {
-                            setTitle(value)
-                            if (pageRef.current)
-                                pageRef.current.scrollTo(0, 0);
-                        }}
+                        <div 
+                            onClick={() => {
+                                locatePage(value);
+                                setFilterValue("");
+                                if (pageRef.current)
+                                    pageRef.current.scrollTo(0, 0);
+                            }}
                             key={i}
                         >
                             {value}
@@ -115,6 +80,8 @@ const WikiPage = () => {
                 )
             }
             </div>
+
+            {isLoading ? <LoadingModal/> : <></>}
         </div>
     )
 }

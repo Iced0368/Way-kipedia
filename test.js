@@ -1,3 +1,5 @@
-import wiki from "wikipedia";
+const x = [0, 1, 2, 3, 4]
 
-wiki.languages().then(res => console.log(res));
+x.splice(2, 2);
+
+console.log(x)

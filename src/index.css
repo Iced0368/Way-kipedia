@@ -54,6 +54,45 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+::-webkit-scrollbar {
+  width: 15px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ddd;
+}
+
+::-webkit-scrollbar-button {
+  background: #ccc;
+  border-radius: 50%;
+  display: none;
+}
+
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.column-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
