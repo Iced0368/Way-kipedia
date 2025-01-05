@@ -1,0 +1,37 @@
+.layout-container {
+    display: grid;
+    grid-template-columns: auto 800px auto;
+    grid-template-rows: 80px auto 50px;
+
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+header.layout-header {
+    grid-column: 1 / 4;
+  
+    font-size: 2rem;
+    line-height: 80px;
+    text-align: center;
+    color: white;
+  
+    background-color: #1a1a1a;
+    user-select: none;
+  
+    cursor: pointer;
+}
+
+footer.layout-footer {
+    grid-column: 1 / 4;
+    bottom: 0;
+    background-color: #1a1a1a;
+    line-height: 50px;
+    text-align: center;
+    color: white;
+    user-select: none;
+}

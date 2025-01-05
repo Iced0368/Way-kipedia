@@ -1,6 +1,7 @@
 .App-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto 800px auto;
+  grid-template-rows: 80px auto 50px;
   
   width: 100vw;
   height: 100vh;
@@ -11,37 +12,12 @@
   box-sizing: border-box;
 }
 
-header {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  width: 100vw;
-  padding: 30px;
-
+footer.App-footer {
+  grid-column: 1 / 4;
+  bottom: 0;
   background-color: #1a1a1a;
-
-  label {
-    align-self: center;
-    padding: 10px;
-    background-color: gray;
-    color: white;
-    font-weight: 600;
-    
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    margin-right: 2px;
-  }
-
-  input {
-    padding: 10px;
-    margin-right: 10px;
-  }
-
-  select {
-    padding: 10px;
-    margin-right: 20px;
-  }
-  input {
-    width: calc(60% - 40px);
-  }
+  line-height: 50px;
+  text-align: center;
+  color: white;
+  user-select: none;
 }

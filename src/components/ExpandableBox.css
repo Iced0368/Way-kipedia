@@ -3,11 +3,13 @@
     transition: max-height 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
+    padding-bottom: 30px;
 }
 
 .expandable {
     border-radius: 10px;
     box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1) inset, 0 -8px 4px rgba(0, 0, 0, 0.1) inset;
+    cursor: pointer;
     transition: 0.3s all;
 }
 .expandable:hover {
@@ -15,10 +17,44 @@
     transform: scale(0.98);
 }
 
+@keyframes reveal {
+    from { opacity: 0; }
+    to   { opacity: 0.8; }
+}
+
+@media (prefers-color-scheme: dark) {
+    .expandable {
+        box-shadow: 0 8px 4px rgba(255, 255, 255, 0.1) inset, 0 -8px 4px rgba(255, 255, 255, 0.1) inset;
+    }
+    .expandable:hover {
+        box-shadow: 0 8px 8px rgba(255, 255, 255, 0.2) inset, 0 -8px 8px rgba(255, 255, 255, 0.2) inset;
+    }
+}
+
 .expanded {
     box-shadow: none;
 }
 
 .content {
+    position: relative;
     transition: opacity 0.3s ease;
+}
+
+.content~span {
+    position: absolute;
+    width: 50px;
+    left: 50%;
+    bottom: 0;
+    text-align: center;
+
+    transform: translateX(-50%);
+    border-bottom: 1px solid gray;
+
+    cursor: pointer;
+
+    transition: 0.1s all;
+}
+
+.content~span:hover {
+    bottom: 5px;
 }

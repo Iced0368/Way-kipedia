@@ -1,0 +1,23 @@
+.route-container {
+    margin: 10px 0 10px 0;
+    user-select: none;
+}
+
+.route-block {
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 5px;
+    border-radius: 10px;
+    margin: auto 1px 4px 1px;
+
+    background-color: #fadac6;
+    color: #242424;
+    cursor: pointer;
+
+    transition: 0.2s all;
+}
+
+.route-block:hover {
+    margin: auto 1px 4px 1px;
+    transform: scale(1.1);
+}

@@ -11,6 +11,8 @@ const ExpandableBox: React.FC<ExpandableBoxProps> = ({children, maxHeight}) => {
     const [isOverflowing, setIsOverflowing] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
 
+    const expandState = isOverflowing ? (isExpanded ? "expanded" : "expandable") : ""; 
+
     useEffect(() => {
         const contentElement = contentRef.current;
         setIsExpanded(false);
@@ -25,11 +27,12 @@ const ExpandableBox: React.FC<ExpandableBoxProps> = ({children, maxHeight}) => {
 
     return (
         <div
-            className={`expandable-box ${isOverflowing ? (isExpanded ? "expanded" : "expandable") : ""}`}
+            className={`expandable-box ${expandState}`}
             style={{ maxHeight: isExpanded ? "none" : `${maxHeight}px` }}
-            onClick={toggleExpand}
+            onClick={expandState === "expandable" ? toggleExpand : undefined}
         >
             <div className="content" ref={contentRef}>{children}</div>
+            {isExpanded ? <span onClick={toggleExpand}>접기</span> : <></>}
         </div>
     );
 }

@@ -1,3 +1,6 @@
-import WikiPage from "./WikiPage";
+import Layout from "./Layout";
 
-export default { WikiPage }
+import WikiPage from "./WikiPage";
+import InitPage from "./InitPage";
+
+export { Layout, WikiPage, InitPage };
