@@ -7,8 +7,9 @@ const PageRoutes = () => {
         <div className="route-container">
             지나온 문서들 :&nbsp;&nbsp;
             {
-                titleStack.map((title) => (
+                titleStack.map((title, i) => (
                     <div 
+                        key={i}
                         className="route-block"
                         onClick={() => revertTo(title)}
                     >

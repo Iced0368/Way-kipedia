@@ -1,4 +1,4 @@
-import wiki, { wikiSummary } from "wikipedia";
+import wiki from "wikipedia";
 
 const getDocData = async (dest: string) => {
     let pageid: number = 0;
@@ -45,9 +45,6 @@ const getDocData = async (dest: string) => {
     ])
 
     await allPromise;
-
-    console.log(page);
-
     return {
         pageid: pageid, touched: touched,
         title: title,   description: description,
@@ -57,5 +54,6 @@ const getDocData = async (dest: string) => {
         isLoading: false,
     };
 }
+
 
 export { getDocData };

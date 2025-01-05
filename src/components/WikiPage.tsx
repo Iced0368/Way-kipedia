@@ -15,18 +15,18 @@ import { getDocData } from '../api/apis';
 
 const WikiPage = () => {
     const pageRef = useRef<HTMLDivElement>(null);
-    const { title, movePage, moveToPrev } = useWikiStore();
+    const { currentTitle, movePage, moveToPrev } = useWikiStore();
     const [filterValue, setFilterValue] = useState("");
     const [notFoundVisible, setNotFoundVisible] = useState(false);
 
     const { data, isFetching } = useQuery(
-        ['wiki', title],
-        () => getDocData(title), 
+        ['wiki', currentTitle],
+        () => getDocData(currentTitle), 
         {
             staleTime: 1000 * 60 * 5,
             cacheTime: 1000 * 60 * 10,
             keepPreviousData: true,
-            enabled: title.length > 0,
+            enabled: currentTitle.length > 0,
             retry: 0,
             onError: () => {
                 moveToPrev();
@@ -82,7 +82,7 @@ const WikiPage = () => {
             {/* LINKS */}
             <h2 className="doc-divider sticky">
                 <div className="special-character">∽</div>
-                &nbsp;{title} - 연결된 문서
+                &nbsp;{currentTitle} - 연결된 문서
             </h2>
             <div className="links-container">
             {
