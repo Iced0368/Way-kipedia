@@ -1,3 +1,3 @@
-import { generateQuestion } from "./GenerateQuestion";
+import { generateQuestions } from "./GenerateQuestion";
 
-export { generateQuestion };
+export { generateQuestions };

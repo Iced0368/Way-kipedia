@@ -5,7 +5,9 @@
 
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
 
     margin: 0 auto;
     text-align: center;

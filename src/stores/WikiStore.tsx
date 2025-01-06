@@ -13,14 +13,10 @@ interface WikiStore {
     titleStack: string[],
 
     initStore: () => void,
-    setGoals: (startPage: Page, endPage: Page) => void,
+    setWikiGoal: (startPage: Page, endPage: Page) => Promise<void>,
     movePage: (dest: string, callback?: ()=> void, fallback?: ()=> void) => void,
     moveToPrev: () => void,
     revertTo: (dest: string) => void,
-}
-
-const defaultConfigs = {
-    lang: 'ko'
 }
 
 const useWikiStore = create<WikiStore>()((set, get) => ({
@@ -35,12 +31,11 @@ const useWikiStore = create<WikiStore>()((set, get) => ({
     titleStack: [],
 
     initStore: () => set(() => ({
-        title: "",
+        currentTitle: "",
         titleStack: [],
-        lang: defaultConfigs.lang
     })),
 
-    setGoals: async (startPage: Page, endPage: Page) => {
+    setWikiGoal: async (startPage: Page, endPage: Page) => {
         let [sd, ed] = ["", ""];
 
         await Promise.all([
@@ -59,10 +54,14 @@ const useWikiStore = create<WikiStore>()((set, get) => ({
     },
 
     movePage: (dest: string) => set(() => {
-        if (get().currentTitle) get().titleStack.push(get().currentTitle);
+        const currentTitle = get().currentTitle;
+        if (currentTitle) 
+            get().titleStack.push(currentTitle);
         return { currentTitle: dest };
     }),
+
     moveToPrev: () => set(() => ({ currentTitle: get().titleStack.pop() })),
+    
     revertTo: (dest: string) => set(() => {
         while (get().titleStack.length > 0) {
             const top = get().titleStack.pop();

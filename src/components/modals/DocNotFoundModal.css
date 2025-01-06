@@ -1,25 +1,11 @@
 @keyframes modal-in-out {
     0% { bottom: -100px; opacity: 0; }
-    25% { bottom: 10px; opacity: 1; }
-    75% { bottom: 10px; opacity: 1; }
+    25% { bottom: calc(70px + 5%); opacity: 1; }
+    75% { bottom: calc(70px + 5%); opacity: 1; }
     100% { bottom: -100px; opacity: 0; }
 }
 
 .nf-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    color: #213547;
-
-    width: 100vw;
-    height: 100vh;
-
-    top: 0;
-    left: 0;
-
-    user-select: none;
-
     svg {
         width: 40px;
         height: 40px;
@@ -33,14 +19,20 @@
         justify-content: center;
         position: absolute;
 
-        width: 400px;
+        color: #0d0d0d;
+
+        width: 50%;
         height: 70px;
+
+        left: 50%;
+        transform: translateX(-50%);
+
         font-size: 1rem;
         background-color: white;
         border: 1px solid gray;
         border-radius: 100px;
         box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 
-        animation: 1.5s modal-in-out ease-in-out;
+        animation: 1.5s modal-in-out ease-in-out infinite;
     }
 }

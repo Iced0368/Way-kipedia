@@ -1,6 +1,11 @@
-import RandomGenerator from "./randomGenerator";
+import RandomGenerator from "./RandomGenerator";
 import wiki, { Page } from "wikipedia";
 import koreanCharacters from "../assets/korean_characters.json";
+
+function isValidString(input: string) {
+    const regex = /^[가-힣a-zA-Z0-9]+$/;
+    return regex.test(input);
+}
 
 const getLCS = (str1: string, str2: string) => {
     const m = str1.length;
@@ -24,7 +29,7 @@ const getLCS = (str1: string, str2: string) => {
     return maxLength;
 }
 
-const getRandomTitle = async (generator: RandomGenerator) => {
+const getRandomTitle = async (generator: RandomGenerator, lang: string) => {
     const characters = koreanCharacters.korean_chars;
 
     let ret: string | null = null;
@@ -35,28 +40,26 @@ const getRandomTitle = async (generator: RandomGenerator) => {
             randomKoreanString += characters[generator.random() % characters.length];
 
         console.log(randomKoreanString);
-        wiki.setLang("ko");
-        const searchResults = (await wiki.search(randomKoreanString)).results;
+        wiki.setLang(lang);
+        let searchResults = (await wiki.search(randomKoreanString)).results;
+        searchResults.filter(item => isValidString(item));
+        
         if (searchResults.length > 0)
             ret = searchResults[generator.random() % searchResults.length].title;
     }
     return ret;
 }
 
-const generateQuestion = async (depth: number, seed: number) => {
+const generateQuestion = async (depth: number, seed: number, lang: string, onProgress?: () => void) => {
     const generator = new RandomGenerator(seed);
-    const start = await getRandomTitle(generator);
+    const start = await getRandomTitle(generator, lang);
     const stack: Page[] = [];
 
-    console.log(start);
-
-    wiki.setLang("ko");
+    wiki.setLang(lang);
     const startPage = await wiki.page(start);
     let cur = startPage;
 
     for (let i = 0; i < depth; i++) {
-        console.log(`${i} / ${depth}`);
-
         const links = await cur.links();
         
         if (links !== null && (links?.length ?? 0) > 0) {
@@ -82,6 +85,8 @@ const generateQuestion = async (depth: number, seed: number) => {
                 cur._links = cur._links.filter(link => link !== nextTitle);
             }
         }
+
+        onProgress && onProgress();
     }
     stack.push(cur);
 
@@ -95,4 +100,11 @@ const generateQuestion = async (depth: number, seed: number) => {
     }
 }
 
-export {generateQuestion};
+const generateQuestions = async (depth: number, batch: number, seed: number, lang: string, onProgress?: () => void) => {
+    const promises = [...Array(batch).keys()].map((i) => generateQuestion(depth, seed + i*1000, lang, onProgress));
+    const questions = await Promise.all(promises);
+    return questions;
+}
+
+
+export {generateQuestions};

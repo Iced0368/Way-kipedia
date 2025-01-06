@@ -157,6 +157,7 @@ input.filter-input {
 
 .links-container {
     display: grid;
+    margin-bottom: 100px;
     grid-template-columns: repeat(4, 1fr);
 
     div {

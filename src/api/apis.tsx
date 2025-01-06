@@ -1,6 +1,6 @@
 import wiki from "wikipedia";
 
-const getDocData = async (dest: string) => {
+const getDocData = async (dest: string, lang: string) => {
     let pageid: number = 0;
     let touched: string = "";
     let title: string = "";
@@ -11,7 +11,7 @@ const getDocData = async (dest: string) => {
     //let related: wikiSummary[] = [];
     let redirect: string = "";
 
-    wiki.setLang('ko');
+    wiki.setLang(lang);
     const page = await wiki.page(dest);
 
     pageid = page.pageid;

@@ -1,0 +1,8 @@
+.scrollable-box {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.scrollable-box::-webkit-scrollbar {
+    display: none;
+}

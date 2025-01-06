@@ -1,35 +1,39 @@
 import './WikiPage.css'
 
 import QuestionCircle from '../assets/question-circle.svg?react'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useQuery } from 'react-query';
 
-import { useWikiStore } from '../stores';
+import { useModalStore, useWikiStore } from '../stores';
 
-import ExpandableBox from './ExpandableBox';
-import LoadingModal from './modals/LoadingModal';
-import DocNotFoundModal from './modals/DocNotFoundModal';
+import { ExpandableBox } from './frags';
 import PageRoutes from './PageRoutes';
 import { getDocData } from '../api/apis';
-
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const WikiPage = () => {
     const pageRef = useRef<HTMLDivElement>(null);
-    const { currentTitle, movePage, moveToPrev } = useWikiStore();
     const [filterValue, setFilterValue] = useState("");
-    const [notFoundVisible, setNotFoundVisible] = useState(false);
+
+    const { movePage, moveToPrev } = useWikiStore();
+    const { setLoadingVisible, setNotFoundVisible } = useModalStore();
+
+    const navigate = useNavigate();
+
+    const title = useLocation().state.title;
+    const lang = useLocation().state.lang;
 
     const { data, isFetching } = useQuery(
-        ['wiki', currentTitle],
-        () => getDocData(currentTitle), 
+        ['wiki', title],
+        () => getDocData(title, lang), 
         {
             staleTime: 1000 * 60 * 5,
             cacheTime: 1000 * 60 * 10,
             keepPreviousData: true,
-            enabled: currentTitle.length > 0,
             retry: 0,
             onError: () => {
                 moveToPrev();
+                navigate(-1);
                 setNotFoundVisible(true);
                 setTimeout(() => setNotFoundVisible(false), 1500)
             },
@@ -46,10 +50,13 @@ const WikiPage = () => {
 
     const handleMovePage = (dest: string) => {
         movePage(dest);
+        navigate(`/nav/title=${dest}&lang=${lang}`, {state: {title: dest, lang: lang}});
         setFilterValue("");
         if (pageRef.current)
             pageRef.current.scrollTo(0, 0);
     }
+
+    useEffect(()=> setLoadingVisible(isFetching), [isFetching]);
 
     return (
         <div className="wiki-page" ref={pageRef}>
@@ -82,7 +89,7 @@ const WikiPage = () => {
             {/* LINKS */}
             <h2 className="doc-divider sticky">
                 <div className="special-character">∽</div>
-                &nbsp;{currentTitle} - 연결된 문서
+                &nbsp;{docTitle} - 연결된 문서
             </h2>
             <div className="links-container">
             {
@@ -113,9 +120,6 @@ const WikiPage = () => {
                 >
                 </input>
             </div>
-
-            {isFetching ? <LoadingModal/> : <></>}
-            {notFoundVisible ? <DocNotFoundModal/> : <></>}
         </div>
     )
 }

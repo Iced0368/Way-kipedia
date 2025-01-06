@@ -18,6 +18,6 @@
 }
 
 .route-block:hover {
-    margin: auto 1px 4px 1px;
+    margin: auto 10px 4px 10px;
     transform: scale(1.1);
 }

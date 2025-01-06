@@ -1,24 +1,88 @@
 .init-page-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
+
     gap: 10px;
-    box-sizing: border-box;
     width: 100%;
     height: 100%;
 
     user-select: none;
 
+    h1 {
+        text-wrap: balance;
+    }
     h1 ~ button {
         width: 50%;
         margin: 0 auto;
     }
 }
 
-.search-bar {
-    height: 50px;
+.gen-box {
+    flex-shrink: 1;
+    margin-top: 20px;
+}
+
+@keyframes goal-reveal {
+    from { width: 0%; height: 0%; }
+    to { width: 100%; height: 50%; }
+}
+
+.goal-container {
+    display: grid;
+    grid-template-columns: 4fr 1fr 4fr;
+    align-items: center;
+    width: 100%;
+    margin: 30px auto;
+    cursor: pointer;
+
+    animation: 0.5s goal-reveal;
+    transition: 0.5s all;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+    }
+}
+
+.goal-container:hover {
+    transform: scale(1.1);
+}
+
+.goal-box {
+    border: 1px solid gray;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #213547;
+
+    padding: 10px 10px;
+    margin: 0 auto;
+    width: 70%;
+    text-wrap: balance;
+
+    p {
+        margin: 0;
+    }
+}
+
+.lb-container {
     width: 50%;
     margin: 0 auto;
+
+    p {
+        margin: 10px;
+    }
+}
+
+
+.search-bar {
+    width: 50%;
+    margin: 0 auto 20px auto;
+
+    div {
+        margin-bottom: 10px;
+    }
 
     input {
         padding: 0 20px;
@@ -28,15 +92,29 @@
     }
 
     button {
-        width: 80px;
+        font-size: 0.8rem;
+        padding: 0;
+        width: 20%;
         height: 100%;
         border: 1px solid gray;
     }
+}
 
-    @media (max-width: 800px) {
-        button {
-            margin-top: 5px;
-            width: 80%;
+
+@media (max-width: 500px) {
+    .goal-container {
+        grid-template-rows: 1fr 0.5fr 1fr;
+        grid-template-columns: none;
+        height: 40%;
+
+        svg {
+            width: 30%;
+            transform: scaleX(1.4) rotate(90deg);
         }
+    }
+
+    .goal-box {
+        width: 70%;
+        font-size: 0.8rem;
     }
 }
