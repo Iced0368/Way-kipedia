@@ -41,6 +41,12 @@ h1 {
   line-height: 1.1;
 }
 
+@media (max-aspect-ratio:4/5) or (max-width: 800px) {
+  h1 {
+    font-size: 2em;
+  }
+}
+
 button {
   border-radius: 8px;
   border: 1px solid #2b2b2b;
@@ -59,6 +65,15 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+button.inactive {
+  color: #555555;
+  background-color: gray;
+}
+button.inactive:hover {
+  border-color: #242424;
+  cursor: default;
 }
 
 ::-webkit-scrollbar {

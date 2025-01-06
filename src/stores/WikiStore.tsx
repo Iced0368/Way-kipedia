@@ -5,10 +5,10 @@ interface WikiStore {
     currentTitle: string,
 
     startPoint: string | null,
-    startDescription: string,
+    startIntro: string,
 
     endPoint: string | null,
-    endDescription: string,
+    endIntro: string,
 
     titleStack: string[],
 
@@ -23,10 +23,10 @@ const useWikiStore = create<WikiStore>()((set, get) => ({
     currentTitle: "",
 
     startPoint: null,
-    startDescription: "",
+    startIntro: "",
 
     endPoint: null,
-    endDescription: "",
+    endIntro: "",
 
     titleStack: [],
 
@@ -36,20 +36,20 @@ const useWikiStore = create<WikiStore>()((set, get) => ({
     })),
 
     setWikiGoal: async (startPage: Page, endPage: Page) => {
-        let [sd, ed] = ["", ""];
+        let [si, ei] = ["", ""];
 
         await Promise.all([
-            startPage.summary()
-                .then(res => sd = res.description), 
-            endPage.summary()
-                .then(res => ed = res.description), 
+            startPage.intro()
+                .then(res => si = res), 
+            endPage.intro()
+                .then(res => ei = res), 
         ]);
 
         set(()=> ({
             startPoint: startPage.title,
             endPoint: endPage.title,
-            startDescription: sd,
-            endDescription: ed,
+            startIntro: si,
+            endIntro: ei,
         }))
     },
 

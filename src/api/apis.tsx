@@ -8,7 +8,6 @@ const getDocData = async (dest: string, lang: string) => {
     let imageURL: string | null = "";
     let intro: string = "";
     let links: string[] = [];
-    //let related: wikiSummary[] = [];
     let redirect: string = "";
 
     wiki.setLang(lang);
@@ -36,12 +35,6 @@ const getDocData = async (dest: string, lang: string) => {
         page.links()
             .then(res => links = res)
             .catch(error => console.error(error)),
-        
-        /*
-        page.related()
-            .then(res => related = res.pages)
-            .catch(error => console.error(error)),
-        */
     ])
 
     await allPromise;
@@ -50,7 +43,6 @@ const getDocData = async (dest: string, lang: string) => {
         title: title,   description: description,
         intro: intro,   imageURL: imageURL,
         links: links,   redirect: redirect,
-        //related: related,
         isLoading: false,
     };
 }

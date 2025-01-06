@@ -50,7 +50,7 @@ const WikiPage = () => {
 
     const handleMovePage = (dest: string) => {
         movePage(dest);
-        navigate(`/nav/title=${dest}&lang=${lang}`, {state: {title: dest, lang: lang}});
+        navigate("/nav/", {state: {title: dest, lang: lang}, replace: true});
         setFilterValue("");
         if (pageRef.current)
             pageRef.current.scrollTo(0, 0);
@@ -108,7 +108,7 @@ const WikiPage = () => {
             {/* FILTER */}
             <div className="filter-container doc-divider">
                 <div className="filter-label-container">
-                    <label className="filter-label">링크 필터</label>
+                    <div className="filter-label">링크 필터</div>
                     <QuestionCircle />
                     <span>입력한 텍스트를 포함한 링크만 나타납니다.</span>
                 </div>

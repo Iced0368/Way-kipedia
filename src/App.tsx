@@ -1,15 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { InitPage, Layout, WikiPage } from './components'
+import { EntryPage, InitPage, Layout, WikiPage } from './components'
 
 function App() {
   return (
     <div className="App-container">
-      <BrowserRouter>
+      <BrowserRouter basename="/Way-kipedia/">
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<InitPage/>}></Route>
-            <Route path="/nav/*" element={<WikiPage/>}></Route>
+            <Route path="" element={<InitPage/>}></Route>
+            <Route path="entry/" element={<EntryPage/>}></Route>
+            <Route path="nav/*" element={<WikiPage/>}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import "./ScrollableBox.css";
 
 interface ScrollableBoxProps {
@@ -8,7 +8,10 @@ interface ScrollableBoxProps {
 
 const ScrollableBox: React.FC<ScrollableBoxProps> = ({children, height}) => {
     return (
-        <div className="scrollable-box" style={{height: height}}>
+        <div 
+            className="scrollable-box" 
+            style={{height: height}}
+        >
             {children}
         </div>
     )

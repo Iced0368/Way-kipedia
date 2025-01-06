@@ -39,7 +39,6 @@ const getRandomTitle = async (generator: RandomGenerator, lang: string) => {
         for(let i = 0; i < 2; i++)
             randomKoreanString += characters[generator.random() % characters.length];
 
-        console.log(randomKoreanString);
         wiki.setLang(lang);
         let searchResults = (await wiki.search(randomKoreanString)).results;
         searchResults.filter(item => isValidString(item));
@@ -56,7 +55,15 @@ const generateQuestion = async (depth: number, seed: number, lang: string, onPro
     const stack: Page[] = [];
 
     wiki.setLang(lang);
-    const startPage = await wiki.page(start);
+
+    let startPage = null;
+    try {
+        startPage = await wiki.page(start);
+    }
+    catch (error) {
+        console.error(error);
+        return null;
+    }
     let cur = startPage;
 
     for (let i = 0; i < depth; i++) {

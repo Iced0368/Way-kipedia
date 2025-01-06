@@ -20,15 +20,15 @@
     box-shadow: 0px -8px 5px -5px rgba(0, 0, 0, 0.5), 0px 8px 5px -5px rgba(0, 0, 0, 0.5);
 }
 
-.sticky {
-    top: 0;
-    position: sticky;
-}
-
 @media (prefers-color-scheme: dark) {
     .doc-divider {
         background-color: #242424;
     }
+}
+
+.sticky {
+    top: 0;
+    position: sticky;
 }
 
 .special-character {
@@ -185,17 +185,18 @@ input.filter-input {
     }
 }
 
-@media (max-width: 800px) {
-    .links-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
 @media (prefers-color-scheme: dark) {
     .links-container div {
         color: skyblue;
     }
 }
+
+@media (max-aspect-ratio:4/5) or (max-width: 800px) {
+    .links-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 
 
 .filter-container {
@@ -223,17 +224,18 @@ input.filter-input {
         cursor: pointer;
     }
     svg~span {
-        position: relative;
+        position: absolute;
+        left: 120px;
         display: inline-block;
         height: 10px;
         line-height: 10px;
         margin-left: 15px;
         border-radius: 5px;
         box-shadow: 3px 3px 3px gray;
-        background-color: white;
+        background-color: #eeeeee;
         color: #213547;
         padding: 10px;
-        opacity: 0;
+        display: none;
         transition: 0.2s all;
     }
 
@@ -244,12 +246,12 @@ input.filter-input {
         transform: translateY(-50%);
         content: "";
         border-top: 5px solid transparent;
-        border-right: 15px solid white;
+        border-right: 15px solid #eeeeee;
         border-bottom: 5px solid transparent;
         border-left: 15px solid transparent;
     }
 
     svg:hover~span {
-        opacity: 1;
+        display: block;
     }
 }
