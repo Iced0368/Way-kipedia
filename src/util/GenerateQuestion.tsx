@@ -53,6 +53,7 @@ const generateQuestion = async (depth: number, seed: number, lang: string, onPro
     const generator = new RandomGenerator(seed);
     const start = await getRandomTitle(generator, lang);
     const stack: Page[] = [];
+    const discovered = new Set<string>();
 
     wiki.setLang(lang);
 
@@ -73,7 +74,7 @@ const generateQuestion = async (depth: number, seed: number, lang: string, onPro
             let minLCS: number = 1000;
             let candidate: string[] = [];
 
-            links?.forEach(item => {
+            links?.filter(item => !discovered.has(item)).forEach(item => {
                 const lcs = getLCS(cur.title, item);
                 if (lcs < minLCS)
                     [minLCS, candidate] = [lcs, [item]];
@@ -87,6 +88,8 @@ const generateQuestion = async (depth: number, seed: number, lang: string, onPro
                 const nextPage = await wiki.page(nextTitle);
                 stack.push(cur);
                 cur = nextPage;
+
+                links.forEach((link) => discovered.add(link));
             }
             catch(_) {
                 cur._links = cur._links.filter(link => link !== nextTitle);
