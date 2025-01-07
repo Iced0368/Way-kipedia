@@ -15,7 +15,7 @@ interface WikiStore {
     initStore: () => void,
     setWikiGoal: (startPage: Page, endPage: Page) => Promise<void>,
     movePage: (dest: string, callback?: ()=> void, fallback?: ()=> void) => void,
-    moveToPrev: () => void,
+    moveToPrev: () => string | undefined,
     revertTo: (dest: string) => void,
 }
 
@@ -60,7 +60,11 @@ const useWikiStore = create<WikiStore>()((set, get) => ({
         return { currentTitle: dest };
     }),
 
-    moveToPrev: () => set(() => ({ currentTitle: get().titleStack.pop() })),
+    moveToPrev: () => {
+        const prevTitle = get().titleStack.pop();
+        set(() => ({ currentTitle: prevTitle }));
+        return prevTitle;
+    },
     
     revertTo: (dest: string) => set(() => {
         while (get().titleStack.length > 0) {

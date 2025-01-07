@@ -4,36 +4,45 @@ import QuestionCircle from '../assets/question-circle.svg?react'
 import { useEffect, useRef, useState } from "react"
 import { useQuery } from 'react-query';
 
-import { useModalStore, useWikiStore } from '../stores';
+import { useConfigStore, useModalStore, useWikiStore } from '../stores';
 
 import { ExpandableBox } from './frags';
 import PageRoutes from './PageRoutes';
 import { getDocData } from '../api/apis';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const WikiPage = () => {
     const pageRef = useRef<HTMLDivElement>(null);
     const [filterValue, setFilterValue] = useState("");
 
-    const { movePage, moveToPrev } = useWikiStore();
+    const { currentTitle, movePage, moveToPrev } = useWikiStore();
+    const { lang } = useConfigStore();
     const { setLoadingVisible, setNotFoundVisible } = useModalStore();
 
     const navigate = useNavigate();
 
-    const title = useLocation().state.title;
-    const lang = useLocation().state.lang;
+    const handleNavigate = (dest: string | undefined) => {
+        if (dest !== undefined) {
+            movePage(dest);
+            setFilterValue("");
+            if (pageRef.current)
+                pageRef.current.scrollTo(0, 0);
+        }
+        else {
+            navigate("/");
+        }
+    }
 
     const { data, isFetching } = useQuery(
-        ['wiki', title],
-        () => getDocData(title, lang), 
+        ['wiki', currentTitle],
+        () => getDocData(currentTitle, lang), 
         {
             staleTime: 1000 * 60 * 5,
             cacheTime: 1000 * 60 * 10,
             keepPreviousData: true,
             retry: 0,
             onError: () => {
-                moveToPrev();
-                navigate(-1);
+                handleNavigate(moveToPrev());
                 setNotFoundVisible(true);
                 setTimeout(() => setNotFoundVisible(false), 1500)
             },
@@ -47,14 +56,6 @@ const WikiPage = () => {
     const imageURL      = data?.imageURL ?? null;
     const intro         = data?.intro ?? "";
     const links         = data?.links ?? [];
-
-    const handleMovePage = (dest: string) => {
-        movePage(dest);
-        navigate("/nav/", {state: {title: dest, lang: lang}, replace: true});
-        setFilterValue("");
-        if (pageRef.current)
-            pageRef.current.scrollTo(0, 0);
-    }
 
     useEffect(()=> setLoadingVisible(isFetching), [isFetching]);
 
@@ -96,7 +97,7 @@ const WikiPage = () => {
                 links!.filter(val => val.toLowerCase().includes(filterValue.toLowerCase()))
                     .map((value, i) => 
                         <div 
-                            onClick={() => handleMovePage(value)}
+                            onClick={() => handleNavigate(value)}
                             key={i}
                         >
                             {value}

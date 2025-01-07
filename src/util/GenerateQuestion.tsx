@@ -58,7 +58,7 @@ const generateQuestion = async (depth: number, seed: number, lang: string, onPro
 
     let startPage = null;
     try {
-        startPage = await wiki.page(start);
+        startPage = await wiki.page(start, {preload: true, fields: ["links"]});
     }
     catch (error) {
         console.error(error);

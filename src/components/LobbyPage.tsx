@@ -2,7 +2,7 @@ import "./LobbyPage.css"
 
 import { Page } from "wikipedia";
 import { useEffect, useState } from "react";
-import { useConfigStore, useWikiStore } from "../stores";
+import { useConfigStore, useModalStore, useWikiStore } from "../stores";
 import { useNavigate } from "react-router-dom";
 import { generateQuestions } from "../util";
 
@@ -25,12 +25,13 @@ const InitPage = () => {
 
     const { movePage, setWikiGoal, initStore } = useWikiStore();
     const { lang, generateDepth, generateBatch } = useConfigStore();
+    const { setLoadingVisible } = useModalStore();
 
     const navigate = useNavigate();
 
     const handleNavigate = (dest: string) => {
         movePage(dest);
-        navigate(`/nav/title=${dest}&lang=${lang}`, {state: {title: dest, lang: lang}, replace: true});
+        navigate("/nav", {replace: true});
     }
 
     const handleEnter = () => {
@@ -40,6 +41,7 @@ const InitPage = () => {
     useEffect(() => {
         initStore(); 
         setProgress(UNINITIATED);
+        setLoadingVisible(false);
     }, [navigate]);
 
     const progressPercentage = Math.max(Math.round(progress / (generateDepth! * generateBatch!) * 100), 0);
@@ -55,8 +57,11 @@ const InitPage = () => {
                         if (progress >= 0) return;
                         setProgress(0);
                         console.time();
+                        const today = new Date();
+                        const seed = Number(today);//400 * today.getFullYear() + (40 * today.getMonth() + today.getDay());
+
                         const questions = await generateQuestions(
-                            generateDepth!, generateBatch!, Number(new Date()), lang!,
+                            generateDepth!, generateBatch!, seed, lang!,
                             () => setProgress(prev => prev!+1)
                         );
 
