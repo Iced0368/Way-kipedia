@@ -79,9 +79,9 @@ const WikiPage = () => {
                 <ExpandableBox maxHeight={500}>
                     <div className={`img-container ${imageURL === null ? "null" : ""}`}>
                         <label className="img-label">이미지</label>
-                        <figure className="img-border">
+                        <div className="img-border">
                             <img src={(imageURL ?? "")} decoding="async"></img>
-                        </figure> 
+                        </div> 
                     </div>
                     {intro!.split('\n').map((val, i)=>
                         <p className="intro-text" key={i}>&nbsp;{val}</p>
