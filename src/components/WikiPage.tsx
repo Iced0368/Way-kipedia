@@ -42,7 +42,9 @@ const WikiPage = () => {
             keepPreviousData: true,
             retry: 0,
             onError: () => {
-                handleNavigate(moveToPrev());
+                const prev = moveToPrev();
+                if (prev === undefined)
+                    handleNavigate(undefined);
                 setNotFoundVisible(true);
                 setTimeout(() => setNotFoundVisible(false), 1500)
             },
@@ -95,10 +97,10 @@ const WikiPage = () => {
             <div className="links-container">
             {
                 links!.filter(val => val.toLowerCase().includes(filterValue.toLowerCase()))
-                    .map((value, i) => 
+                    .map(value => 
                         <div 
                             onClick={() => handleNavigate(value)}
-                            key={i}
+                            key={value}
                         >
                             {value}
                         </div>
