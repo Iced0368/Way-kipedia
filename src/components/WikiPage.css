@@ -45,7 +45,6 @@
         text-shadow: 2px 5px 5px gray;
 
         span {
-            display: inline-block;
             position: absolute;
     
             line-height: 100%;
@@ -224,7 +223,6 @@ input.filter-input {
     svg~span {
         position: absolute;
         left: 120px;
-        display: inline-block;
         height: 10px;
         line-height: 10px;
         margin-left: 15px;

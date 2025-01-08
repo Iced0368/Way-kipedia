@@ -93,7 +93,7 @@ const InitPage = () => {
                     {
                         goalCandidates.map((goal, index) => (
                             <div 
-                                key={index}
+                                key={`${goal.start.title}=>${goal.end.title}`}
                                 className="goal-container"
                                 onClick={async () => {
                                     const startPage = goalCandidates[index].start;

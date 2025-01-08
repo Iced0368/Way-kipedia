@@ -11,8 +11,8 @@ const PageRoutes = () => {
             지나온 문서들 :&nbsp;&nbsp;
             {
                 titleStack.map((title, i) => (
-                    <div 
-                        key={i}
+                    <span 
+                        key={`${title}/${i}`}
                         className="route-block"
                         onClick={() => {
                             revertTo(title);
@@ -20,7 +20,7 @@ const PageRoutes = () => {
                         }}
                     >
                         {title}
-                    </div>
+                    </span>
                 ))
             }
         </div>

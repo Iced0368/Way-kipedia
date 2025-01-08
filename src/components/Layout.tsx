@@ -17,14 +17,14 @@ const Layout = () => {
             >
                 WAYKIPEDIA
             </header>
-            <div></div>
+            <aside></aside>
 
             <Outlet/>
 
             {loadingVisible ? <LoadingModal/> : <></>}
             {notFoundVisible ? <DocNotFoundModal/> : <></>}
             
-            <div></div>
+            <aside></aside>
             <footer className="layout-footer">
                 iced0368@github.io
             </footer>

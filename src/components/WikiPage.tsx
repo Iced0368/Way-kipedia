@@ -62,7 +62,7 @@ const WikiPage = () => {
     useEffect(()=> setLoadingVisible(isFetching), [isFetching]);
 
     return (
-        <div className="wiki-page" ref={pageRef}>
+        <main className="wiki-page" ref={pageRef}>
             <PageRoutes/>
             {/* TITLE */}
             <div className="page-title doc-divider">
@@ -75,26 +75,26 @@ const WikiPage = () => {
             </div>
 
             {/* CONTENT */}
-            <div>
+            <section>
                 <ExpandableBox maxHeight={500}>
                     <div className={`img-container ${imageURL === null ? "null" : ""}`}>
                         <label className="img-label">이미지</label>
-                        <div className="img-border">
+                        <figure className="img-border">
                             <img src={(imageURL ?? "")} decoding="async"></img>
-                        </div> 
+                        </figure> 
                     </div>
                     {intro!.split('\n').map((val, i)=>
                         <p className="intro-text" key={i}>&nbsp;{val}</p>
                     )}
                 </ExpandableBox>
-            </div>
+            </section>
 
             {/* LINKS */}
             <h2 className="doc-divider sticky">
                 <div className="special-character">∽</div>
                 &nbsp;{docTitle} - 연결된 문서
             </h2>
-            <div className="links-container">
+            <nav className="links-container">
             {
                 links!.filter(val => val.toLowerCase().includes(filterValue.toLowerCase()))
                     .map(value => 
@@ -106,7 +106,7 @@ const WikiPage = () => {
                         </div>
                 )
             }
-            </div>
+            </nav>
 
             {/* FILTER */}
             <div className="filter-container doc-divider">
@@ -123,7 +123,7 @@ const WikiPage = () => {
                 >
                 </input>
             </div>
-        </div>
+        </main>
     )
 }
 
