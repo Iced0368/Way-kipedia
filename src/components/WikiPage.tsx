@@ -40,6 +40,7 @@ const WikiPage = () => {
             staleTime: 1000 * 60 * 5,
             cacheTime: 1000 * 60 * 10,
             keepPreviousData: true,
+            enabled: currentTitle !== undefined,
             retry: 0,
             onError: () => {
                 const prev = moveToPrev();
@@ -94,12 +95,20 @@ const WikiPage = () => {
                 <div className="special-character">∽</div>
                 &nbsp;{docTitle} - 연결된 문서
             </h2>
-            <nav className="links-container">
+            <nav className="links-container"
+                onClick={(e) => {
+                    const target = e.target;
+                    if (target instanceof HTMLDivElement 
+                        && target.className === "wiki-link"
+                        && target.textContent !== null
+                    )
+                        handleNavigate(target.textContent);
+                }}
+            >
             {
                 links!.filter(val => val.toLowerCase().includes(filterValue.toLowerCase()))
                     .map(value => 
-                        <div 
-                            onClick={() => handleNavigate(value)}
+                        <div className="wiki-link"
                             key={value}
                         >
                             {value}
